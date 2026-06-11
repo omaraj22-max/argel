@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Argel · Catálogo para dentistas</title>
+<meta name="description" content="Catálogo clínico Argel: instrumental, resinas, endodoncia y desechables de grado profesional. Arma tu requisición y tu distribuidor te cotiza." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     TOKENS — BRANDBOOK ARGEL
+     ============================================================ */
+  :root{
+    --navy:#072B5B; --navy-700:#0a3a78; --navy-900:#051d3e;
+    --sky:#28B7E8; --sky-600:#1aa0d0; --sky-50:#e9f7fd; --sky-100:#cfeefb;
+    --gray-bg:#F4F6F8; --white:#FFFFFF;
+    --ink:#0c1b2e; --ink-soft:#46586e; --line:#dde4ec; --line-soft:#eaeff4;
+    --success:#16a34a; --error:#dc2626;
+    --font-display:'Montserrat', system-ui, sans-serif;
+    --font-body:'Inter', system-ui, sans-serif;
+    --r-sm:.5rem; --r-md:.75rem; --r-lg:1rem; --r-pill:999px;
+    --sh-sm:0 1px 2px rgba(7,43,91,.06);
+    --sh-md:0 8px 24px -10px rgba(7,43,91,.18);
+    --sh-lg:0 24px 60px -22px rgba(7,43,91,.26);
+    --max:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font-body);color:var(--ink);background:var(--gray-bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4,.brand{font-family:var(--font-display)}
+  img{display:block;max-width:100%}
+  button{font-family:inherit;cursor:pointer;border:none;background:none}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+
+  .logo-mark{width:34px;height:34px;flex:none;display:grid;gap:3px;grid-template-rows:1fr 1fr;align-content:center}
+  .logo-mark .bar{display:grid;grid-template-columns:1fr 1fr;gap:3px;height:9px}
+  .logo-mark .bar i{border-radius:2px}
+  .logo-mark .bar:nth-child(1) i:nth-child(1){background:var(--navy)}
+  .logo-mark .bar:nth-child(1) i:nth-child(2){background:var(--sky)}
+  .logo-mark .bar:nth-child(2) i:nth-child(1){background:var(--sky)}
+  .logo-mark .bar:nth-child(2) i:nth-child(2){background:var(--navy)}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:1.3rem;letter-spacing:.02em;color:var(--navy)}
+  .brand small{display:block;font-family:var(--font-body);font-weight:500;font-size:.6rem;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase;margin-top:1px}
+  .nav-links{display:flex;gap:26px;align-items:center;font-size:.9rem;font-weight:500;color:var(--ink-soft)}
+  .nav-links a:hover{color:var(--sky-600)}
+  .req-btn{position:relative;display:flex;align-items:center;gap:8px;background:var(--navy);color:#fff;padding:10px 18px;border-radius:var(--r-pill);font-size:.86rem;font-weight:600;font-family:var(--font-display);transition:.16s}
+  .req-btn:hover{background:var(--navy-700)}
+  .req-count{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;background:var(--sky);color:var(--navy-900);border-radius:var(--r-pill);font-size:.7rem;font-weight:800;display:grid;place-items:center;border:2px solid #fff;transition:transform .18s}
+  .req-count[hidden]{display:none}
+
+  .view{display:none;animation:fade .28s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .section-head{padding:40px 0 8px}
+  .eyebrow{font-family:var(--font-display);font-size:.72rem;text-transform:uppercase;letter-spacing:.16em;color:var(--sky-600);font-weight:700}
+  h1.title{font-size:clamp(1.8rem,4vw,2.5rem);letter-spacing:-.02em;line-height:1.1;margin-top:8px;color:var(--navy);font-weight:800}
+  .lead{color:var(--ink-soft);max-width:60ch;margin-top:11px;font-size:1.02rem}
+
+  /* Barra de filtros + búsqueda */
+  .toolbar{display:flex;gap:14px;align-items:center;padding:24px 0 4px;flex-wrap:wrap;justify-content:space-between}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;flex:1;min-width:0}
+  .chip{padding:8px 16px;border-radius:var(--r-pill);border:1px solid var(--line);background:#fff;font-size:.84rem;font-weight:500;color:var(--ink-soft);transition:.15s;white-space:nowrap}
+  .chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .chip:hover:not(.active){border-color:var(--sky);color:var(--sky-600)}
+  .search{position:relative;flex:none}
+  .search input{width:240px;max-width:100%;padding:10px 16px 10px 38px;border:1px solid var(--line);border-radius:var(--r-pill);font-family:inherit;font-size:.86rem;color:var(--ink);background:#fff}
+  .search input:focus{outline:2px solid var(--sky);outline-offset:1px;border-color:transparent}
+  .search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--ink-soft)}
+  .result-count{font-size:.82rem;color:var(--ink-soft);padding:14px 0 0}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(244px,1fr));gap:20px;padding:16px 0 60px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;display:flex;flex-direction:column}
+  .card:hover{transform:translateY(-4px);box-shadow:var(--sh-md);border-color:var(--sky-100)}
+  .card .ph{aspect-ratio:4/3;background:#fff;position:relative;overflow:hidden;border-bottom:1px solid var(--line-soft)}
+  .card .ph img{width:100%;height:100%;object-fit:contain;padding:14px;transition:transform .25s}
+  .card:hover .ph img{transform:scale(1.04)}
+  .cat-tag{position:absolute;top:11px;left:11px;background:var(--navy);color:#fff;font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:5px 10px;border-radius:var(--r-pill);font-family:var(--font-display);max-width:calc(100% - 22px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .card .body{padding:15px 15px 17px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .card h3{font-size:1rem;letter-spacing:-.01em;font-weight:700;color:var(--navy);line-height:1.25}
+  .card .desc{font-size:.84rem;color:var(--ink-soft);flex:1;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .card .actions{display:flex;gap:8px;margin-top:6px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;font-weight:600;font-family:var(--font-display);border-radius:var(--r-md);transition:.16s;font-size:.86rem;padding:10px 15px}
+  .btn-primary{background:var(--sky);color:var(--navy-900)}
+  .btn-primary:hover{background:var(--sky-600);color:#fff}
+  .btn-primary:active{transform:scale(.98)}
+  .btn-navy{background:var(--navy);color:#fff}
+  .btn-navy:hover{background:var(--navy-700)}
+  .btn-ghost{background:var(--gray-bg);color:var(--ink-soft);border:1px solid var(--line)}
+  .btn-ghost:hover{background:#fff;border-color:var(--sky);color:var(--sky-600)}
+  .btn-block{width:100%}
+  .btn-lg{padding:14px 24px;font-size:.95rem}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .card .actions .btn-primary{flex:1}
+
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-soft);font-size:.88rem;font-weight:500;margin:28px 0 4px}
+  .back:hover{color:var(--sky-600)}
+  .pdp{display:grid;grid-template-columns:1.1fr 1fr;gap:46px;padding:18px 0 64px;align-items:start}
+  .pdp .gallery{background:#fff;border-radius:var(--r-lg);aspect-ratio:1/1;overflow:hidden;border:1px solid var(--line)}
+  .pdp .gallery img{width:100%;height:100%;object-fit:contain;padding:30px}
+  .pdp .info h2{font-size:2rem;letter-spacing:-.02em;line-height:1.12;margin:9px 0 8px;color:var(--navy);font-weight:800}
+  .pdp .info .cat{font-family:var(--font-display);font-size:.72rem;text-transform:uppercase;letter-spacing:.13em;color:var(--sky-600);font-weight:700}
+  .pdp .info>p{color:var(--ink-soft)}
+  .benefits{list-style:none;margin:22px 0;display:flex;flex-direction:column;gap:12px}
+  .benefits li{display:flex;gap:11px;font-size:.92rem;color:var(--ink)}
+  .benefits .ic{flex:none;width:22px;height:22px;border-radius:50%;background:var(--sky-50);color:var(--sky-600);display:grid;place-items:center;font-size:.72rem;font-weight:800;margin-top:1px}
+  .specs{border-top:1px solid var(--line);margin-top:20px;padding-top:18px}
+  .specs h4{font-family:var(--font-display);font-size:.74rem;text-transform:uppercase;letter-spacing:.11em;color:var(--ink-soft);margin-bottom:12px;font-weight:700}
+  .spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 26px;font-size:.88rem}
+  .spec-grid div{display:flex;justify-content:space-between;gap:14px;border-bottom:1px dashed var(--line);padding-bottom:7px}
+  .spec-grid span:first-child{color:var(--ink-soft)}
+  .spec-grid strong{color:var(--navy);text-align:right}
+  .qty{display:flex;align-items:center;border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;width:fit-content}
+  .qty button{width:42px;height:46px;font-size:1.1rem;color:var(--navy);background:var(--gray-bg)}
+  .qty button:hover{background:var(--sky-50)}
+  .qty input{width:50px;height:46px;text-align:center;border:none;font-size:1rem;font-weight:700;color:var(--navy);font-family:var(--font-display);background:#fff}
+  .pdp-cta{display:flex;gap:12px;align-items:center;margin-top:24px;flex-wrap:wrap}
+  .no-price-note{font-size:.82rem;color:var(--ink-soft);background:var(--sky-50);border:1px solid var(--sky-100);padding:10px 14px;border-radius:var(--r-sm);margin-top:18px;display:flex;gap:9px;align-items:center}
+  .pdp-link{display:inline-flex;align-items:center;gap:6px;font-size:.85rem;color:var(--sky-600);font-weight:600;font-family:var(--font-display);margin-top:16px}
+  .pdp-link:hover{color:var(--navy)}
+
+  .req-layout{display:grid;grid-template-columns:1.5fr .9fr;gap:32px;padding:8px 0 64px;align-items:start}
+  .req-list{display:flex;flex-direction:column;gap:12px}
+  .req-row{display:grid;grid-template-columns:66px 1fr auto auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:13px}
+  .req-row .thumb{width:66px;height:66px;border-radius:var(--r-sm);background:#fff;overflow:hidden;border:1px solid var(--line-soft)}
+  .req-row .thumb img{width:100%;height:100%;object-fit:contain;padding:5px}
+  .req-row h4{font-size:.95rem;font-weight:700;color:var(--navy);line-height:1.3}
+  .req-row .rcat{font-family:var(--font-display);font-size:.7rem;color:var(--sky-600);text-transform:uppercase;letter-spacing:.09em;font-weight:600}
+  .req-row .remove{color:var(--ink-soft);font-size:1.1rem;padding:4px 8px}
+  .req-row .remove:hover{color:var(--error)}
+  .qty.sm button{width:34px;height:36px;font-size:.95rem}
+  .qty.sm input{width:40px;height:36px;font-size:.9rem}
+  .summary{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;position:sticky;top:88px;box-shadow:var(--sh-sm)}
+  .summary h3{font-size:1.1rem;margin-bottom:5px;color:var(--navy);font-weight:700}
+  .summary .sub{font-size:.84rem;color:var(--ink-soft);margin-bottom:18px}
+  .summary .line{display:flex;justify-content:space-between;font-size:.9rem;padding:9px 0;border-bottom:1px solid var(--line-soft)}
+  .summary .line strong{color:var(--navy);font-family:var(--font-display)}
+  .note-field{width:100%;margin-top:14px;border:1px solid var(--line);border-radius:var(--r-md);padding:11px 13px;font-family:inherit;font-size:.88rem;resize:vertical;min-height:74px;color:var(--ink)}
+  .note-field:focus{outline:2px solid var(--sky);outline-offset:1px;border-color:transparent}
+  .empty{text-align:center;padding:74px 20px;color:var(--ink-soft)}
+  .empty .big{font-size:2.6rem;margin-bottom:12px}
+
+  .geo-box{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:30px;margin:14px 0 24px;text-align:center;box-shadow:var(--sh-sm)}
+  .geo-box .pin{width:58px;height:58px;border-radius:50%;background:var(--sky-50);color:var(--sky-600);display:grid;place-items:center;font-size:1.5rem;margin:0 auto 16px}
+  .geo-box h3{font-size:1.2rem;margin-bottom:7px;color:var(--navy);font-weight:700}
+  .geo-box p{color:var(--ink-soft);font-size:.92rem;max-width:48ch;margin:0 auto 18px}
+  .geo-box select,.geo-fallback select{padding:11px 14px;border:1px solid var(--line);border-radius:var(--r-md);font-family:inherit;font-size:.92rem;min-width:240px;color:var(--ink)}
+  .geo-fallback{margin-top:16px;font-size:.86rem;color:var(--ink-soft)}
+  .geo-fallback select{margin-top:8px}
+  .dist-list{display:flex;flex-direction:column;gap:12px;padding-bottom:18px}
+  .dist{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;background:#fff;border:2px solid var(--line);border-radius:var(--r-md);padding:17px;cursor:pointer;transition:.15s}
+  .dist:hover{border-color:var(--sky)}
+  .dist.sel{border-color:var(--sky);background:var(--sky-50)}
+  .dist .radio{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;transition:.15s}
+  .dist.sel .radio{border-color:var(--sky)}
+  .dist.sel .radio::after{content:'';width:11px;height:11px;border-radius:50%;background:var(--sky)}
+  .dist h4{font-size:1rem;font-weight:700;color:var(--navy)}
+  .dist .addr{font-size:.85rem;color:var(--ink-soft);margin-top:2px}
+  .dist .km{font-family:var(--font-display);font-size:.84rem;font-weight:700;color:var(--sky-600);white-space:nowrap;text-align:right}
+  .dist .km small{display:block;font-weight:400;color:var(--ink-soft);font-size:.7rem;font-family:var(--font-body)}
+
+  .gate{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:26px;margin-top:8px;box-shadow:var(--sh-sm)}
+  .gate h3{font-size:1.15rem;margin-bottom:5px;color:var(--navy);font-weight:700}
+  .gate .sub{font-size:.86rem;color:var(--ink-soft);margin-bottom:20px}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field.full{grid-column:1/-1}
+  .field label{font-family:var(--font-display);font-size:.8rem;font-weight:600;color:var(--navy)}
+  .field input,.field select{padding:12px 13px;border:1px solid var(--line);border-radius:var(--r-md);font-family:inherit;font-size:.92rem;color:var(--ink)}
+  .field input:focus,.field select:focus{outline:2px solid var(--sky);outline-offset:1px;border-color:transparent}
+  .seg{display:flex;gap:8px}
+  .seg button{flex:1;padding:12px;border:1px solid var(--line);border-radius:var(--r-md);font-size:.88rem;font-weight:600;font-family:var(--font-display);color:var(--ink-soft);background:#fff;transition:.15s}
+  .seg button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+  .done{max-width:560px;margin:0 auto;text-align:center;padding:64px 20px}
+  .done .check{width:80px;height:80px;border-radius:50%;background:var(--success);color:#fff;display:grid;place-items:center;font-size:2.3rem;margin:0 auto 24px;animation:pop .42s ease}
+  @keyframes pop{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+  .done h2{font-size:1.75rem;letter-spacing:-.02em;margin-bottom:9px;color:var(--navy);font-weight:800}
+  .done p{color:var(--ink-soft);margin-bottom:6px}
+  .done .dist-name{color:var(--navy);font-weight:700}
+  .done-card{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;text-align:left;margin:28px 0;box-shadow:var(--sh-sm)}
+  .done-card h4{font-family:var(--font-display);font-size:.74rem;text-transform:uppercase;letter-spacing:.11em;color:var(--ink-soft);margin-bottom:13px;font-weight:700}
+  .done-card ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .done-card li{display:flex;justify-content:space-between;gap:14px;font-size:.9rem;border-bottom:1px dashed var(--line);padding-bottom:9px}
+  .done-card .q{color:var(--ink-soft)}
+  .done-card strong{color:var(--navy);font-family:var(--font-display);white-space:nowrap}
+
+  footer{border-top:1px solid var(--line);padding:28px 0;background:var(--navy);color:rgba(255,255,255,.7);font-size:.82rem}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+  footer .vals{display:flex;gap:18px;font-family:var(--font-display);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+  footer .vals span{color:rgba(255,255,255,.55)}
+
+  @media(max-width:860px){
+    .pdp{grid-template-columns:1fr;gap:26px}
+    .req-layout{grid-template-columns:1fr}
+    .summary{position:static}
+    .nav-links{display:none}
+    .form-grid{grid-template-columns:1fr}
+    .search input{width:200px}
+  }
+  @media(max-width:520px){
+    .toolbar{gap:10px}
+    .search{width:100%;order:-1}
+    .search input{width:100%}
+    .req-row{grid-template-columns:54px 1fr;grid-template-areas:'thumb info' 'qty remove';row-gap:10px}
+    .req-row .thumb{grid-area:thumb}
+    .req-row>div:nth-child(2){grid-area:info}
+    .req-row .qty{grid-area:qty}
+    .req-row .remove{grid-area:remove;justify-self:end}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#" onclick="go('catalog');return false">
+      <span class="logo-mark"><span class="bar"><i></i><i></i></span><span class="bar"><i></i><i></i></span></span>
+      <span>ARGEL<small>Odontología profesional</small></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#" onclick="go('catalog');return false">Productos</a>
+      <a href="distribuidores.html">La marca</a>
+      <a href="distribuidores.html">Soy distribuidor</a>
+    </nav>
+    <button class="req-btn" onclick="go('req')">
+      Mi requisición
+      <span class="req-count" id="navCount" hidden>0</span>
+    </button>
+  </div>
+</header>
+
+<section id="catalog" class="view active">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Catálogo clínico</span>
+      <h1 class="title">Todo lo que usas en boca, en un solo lugar</h1>
+      <p class="lead">Instrumental, resinas, endodoncia, aislamiento y desechables de grado profesional. Agrega lo que necesitas a tu requisición y deja que tu distribuidor te cotice.</p>
+    </div>
+    <div class="toolbar">
+      <div class="filters" id="filters"></div>
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="searchInput" type="search" placeholder="Buscar producto…" oninput="onSearch(this.value)" />
+      </div>
+    </div>
+    <div class="result-count" id="resultCount"></div>
+    <div class="grid" id="catGrid"></div>
+  </div>
+</section>
+
+<section id="pdp" class="view">
+  <div class="wrap">
+    <a class="back" href="#" onclick="go('catalog');return false">← Volver al catálogo</a>
+    <div class="pdp" id="pdpContent"></div>
+  </div>
+</section>
+
+<section id="req" class="view">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Tu requisición</span>
+      <h1 class="title">Tu pedido, listo para mandar</h1>
+    </div>
+    <div id="reqBody"></div>
+  </div>
+</section>
+
+<section id="dist" class="view">
+  <div class="wrap">
+    <a class="back" href="#" onclick="go('req');return false">← Volver a mi requisición</a>
+    <div class="section-head">
+      <span class="eyebrow">Paso final</span>
+      <h1 class="title">Elige quién te surte</h1>
+      <p class="lead">Te mostramos los distribuidores Argel más cercanos a ti. Ellos reciben tu pedido y te contactan para cotizar y entregar.</p>
+    </div>
+    <div id="geoArea"></div>
+    <div class="dist-list" id="distList"></div>
+    <div id="gateArea"></div>
+  </div>
+</section>
+
+<section id="sent" class="view">
+  <div class="wrap"><div class="done" id="sentBody"></div></div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Argel · Soluciones que impulsan la odontología profesional</span>
+    <span class="vals"><span>Compromiso</span><span>Integridad</span><span>Calidad</span><span>Servicio</span></span>
+  </div>
+</footer>
+
+<script src="products.js"></script>
+<script>
+const DISTRIBUTORS = [
+  {id:'d1', name:'Depósito Dental Mérida Centro', addr:'Calle 60 #450, Centro, Mérida, Yuc.', city:'Mérida', lat:20.9674, lng:-89.6237, contact:'merida@ejemplo.com'},
+  {id:'d2', name:'Dental Norte Yucatán', addr:'Av. Pérez Ponce 112, Mérida, Yuc.', city:'Mérida', lat:20.9890, lng:-89.6100, contact:'norte@ejemplo.com'},
+  {id:'d3', name:'Insumos Dentales Motul', addr:'Calle 30 #88, Motul, Yuc.', city:'Motul', lat:21.0950, lng:-89.2870, contact:'motul@ejemplo.com'},
+  {id:'d4', name:'Distribuidora Dental Cancún', addr:'Av. Tulum SM 22, Cancún, Q. Roo', city:'Cancún', lat:21.1619, lng:-86.8515, contact:'cancun@ejemplo.com'},
+  {id:'d5', name:'Dental Express CDMX', addr:'Av. Insurgentes Sur 1200, CDMX', city:'CDMX', lat:19.3700, lng:-99.1700, contact:'cdmx@ejemplo.com'},
+];
+
+// --- Derivados de la descripción (no hay specs/benefits en el catálogo) ---
+function benefitsOf(p){
+  return (p.desc||'').split(/(?<=\.)\s+/).map(s=>s.trim()).filter(s=>s.length>8).slice(0,3);
+}
+function specsOf(p){
+  return {'Categoría':p.cat||'—','Marca':'ARGEL','Disponibilidad':'Bajo pedido / distribuidor'};
+}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+let cart = JSON.parse(localStorage.getItem('argel_cart')||'{}');
+let chosenDistributor = null, userType = null, reqNote='';
+function saveCart(){localStorage.setItem('argel_cart', JSON.stringify(cart));renderCount();}
+function cartItems(){return Object.keys(cart).map(id=>({...PRODUCTS.find(p=>p.id===id),qty:cart[id]})).filter(p=>p.id);}
+function cartTotalUnits(){return Object.values(cart).reduce((a,b)=>a+b,0);}
+
+function go(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'instant'});
+  if(id==='req') renderReq();
+  if(id==='dist') initDist();
+}
+
+let activeCat='Todos', searchTerm='';
+function renderFilters(){
+  const cats=['Todos',...CATEGORIES];
+  document.getElementById('filters').innerHTML = cats.map(c=>`<button class="chip ${c===activeCat?'active':''}" onclick="setCat('${esc(c).replace(/'/g,"\\'")}')">${esc(c)}</button>`).join('');
+}
+function setCat(c){activeCat=c;renderFilters();renderCat();}
+function onSearch(v){searchTerm=v.trim().toLowerCase();renderCat();}
+function filteredProducts(){
+  let list = activeCat==='Todos'?PRODUCTS:PRODUCTS.filter(p=>p.cat===activeCat);
+  if(searchTerm){
+    list = list.filter(p=>(p.name+' '+p.cat+' '+p.desc).toLowerCase().includes(searchTerm));
+  }
+  return list;
+}
+function renderCat(){
+  const list = filteredProducts();
+  const rc=document.getElementById('resultCount');
+  rc.textContent = `${list.length} producto${list.length===1?'':'s'}${activeCat!=='Todos'?` · ${activeCat}`:''}${searchTerm?` · “${searchTerm}”`:''}`;
+  if(!list.length){
+    document.getElementById('catGrid').innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="big">🔍</div><p>No encontramos productos con ese criterio. Prueba con otra categoría o término.</p></div>`;
+    return;
+  }
+  document.getElementById('catGrid').innerHTML = list.map(p=>`
+    <article class="card">
+      <div class="ph" onclick="openPdp('${p.id}')" style="cursor:pointer"><span class="cat-tag">${esc(p.cat)}</span><img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy" onerror="this.style.opacity=.25"></div>
+      <div class="body"><h3>${esc(p.name)}</h3><p class="desc">${esc(p.desc)}</p>
+        <div class="actions"><button class="btn btn-ghost" onclick="openPdp('${p.id}')">Ver</button><button class="btn btn-primary" onclick="quickAdd('${p.id}')">＋ Requisición</button></div>
+      </div></article>`).join('');
+}
+function quickAdd(id){cart[id]=(cart[id]||0)+1;saveCart();pulseCount();}
+
+let pdpQty=1, pdpId=null;
+function openPdp(id){
+  const p=PRODUCTS.find(x=>x.id===id);if(!p)return;pdpQty=1;pdpId=id;
+  const benefits=benefitsOf(p), specs=specsOf(p);
+  document.getElementById('pdpContent').innerHTML=`
+    <div class="gallery"><img src="${esc(p.img)}" alt="${esc(p.name)}" onerror="this.style.opacity=.25"></div>
+    <div class="info">
+      <span class="cat">${esc(p.cat)}</span><h2>${esc(p.name)}</h2><p>${esc(p.desc)}</p>
+      <ul class="benefits">${benefits.map(b=>`<li><span class="ic">✓</span><span>${esc(b)}</span></li>`).join('')}</ul>
+      <div class="specs"><h4>Especificaciones</h4><div class="spec-grid">${Object.entries(specs).map(([k,v])=>`<div><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('')}</div></div>
+      <div class="pdp-cta"><div class="qty"><button onclick="pdpStep(-1)">−</button><input id="pdpQty" value="1" readonly><button onclick="pdpStep(1)">＋</button></div>
+        <button class="btn btn-primary btn-lg" onclick="addFromPdp('${p.id}')">Agregar a mi requisición</button></div>
+      ${p.url?`<a class="pdp-link" href="${esc(p.url)}" target="_blank" rel="noopener">Ver ficha oficial en argeldental.com ↗</a>`:''}
+      <div class="no-price-note">🔒 El precio lo cotiza tu distribuidor. Tú eliges con quién trabajar; nosotros solo te conectamos con el producto.</div>
+    </div>`;
+  go('pdp');
+}
+function pdpStep(d){pdpQty=Math.max(1,pdpQty+d);document.getElementById('pdpQty').value=pdpQty;}
+function addFromPdp(id){cart[id]=(cart[id]||0)+pdpQty;saveCart();pulseCount();go('req');}
+
+function renderCount(){const n=cartTotalUnits();const el=document.getElementById('navCount');el.textContent=n;el.hidden=n===0;}
+function pulseCount(){const el=document.getElementById('navCount');el.style.transform='scale(1.4)';setTimeout(()=>el.style.transform='',180);}
+
+function renderReq(){
+  const items=cartItems();const body=document.getElementById('reqBody');
+  if(!items.length){
+    body.innerHTML=`<div class="empty"><div class="big">🗒️</div><p>Tu requisición está vacía. El mejor consultorio empieza por tener material a la mano.</p><button class="btn btn-primary" style="margin-top:18px" onclick="go('catalog')">Explorar catálogo</button></div>`;return;
+  }
+  body.innerHTML=`<div class="req-layout"><div class="req-list">
+    ${items.map(p=>`<div class="req-row"><div class="thumb"><img src="${esc(p.img)}" alt="" onerror="this.style.opacity=.25"></div>
+      <div><div class="rcat">${esc(p.cat)}</div><h4>${esc(p.name)}</h4></div>
+      <div class="qty sm"><button onclick="reqStep('${p.id}',-1)">−</button><input value="${p.qty}" readonly><button onclick="reqStep('${p.id}',1)">＋</button></div>
+      <button class="remove" title="Quitar" onclick="reqRemove('${p.id}')">✕</button></div>`).join('')}
+    </div>
+    <aside class="summary"><h3>Resumen</h3><p class="sub">Sin precios aquí: tu distribuidor cotiza al recibirlo. Tú armas, él responde.</p>
+      <div class="line"><span>Productos distintos</span><strong>${items.length}</strong></div>
+      <div class="line"><span>Unidades totales</span><strong>${cartTotalUnits()}</strong></div>
+      <textarea class="note-field" id="reqNote" placeholder="¿Algo específico para tu distribuidor? (marca, presentación, urgencia…)">${esc(reqNote||'')}</textarea>
+      <button class="btn btn-navy btn-block btn-lg" style="margin-top:16px" onclick="saveNote();go('dist')">Elegir distribuidor →</button>
+    </aside></div>`;
+}
+function saveNote(){const t=document.getElementById('reqNote');if(t)reqNote=t.value;}
+function reqStep(id,d){cart[id]=(cart[id]||1)+d;if(cart[id]<1)delete cart[id];saveCart();renderReq();}
+function reqRemove(id){delete cart[id];saveCart();renderReq();}
+
+function haversine(lat1,lon1,lat2,lon2){
+  const R=6371,toRad=x=>x*Math.PI/180;
+  const dLat=toRad(lat2-lat1),dLon=toRad(lon2-lon1);
+  const a=Math.sin(dLat/2)**2+Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+function cityOptions(){return [...new Set(DISTRIBUTORS.map(d=>d.city))].map(c=>`<option>${esc(c)}</option>`).join('');}
+function initDist(){
+  chosenDistributor=null;
+  document.getElementById('distList').innerHTML='';document.getElementById('gateArea').innerHTML='';
+  document.getElementById('geoArea').innerHTML=`<div class="geo-box"><div class="pin">📍</div>
+    <h3>Encuentra a tu distribuidor más cercano</h3>
+    <p>Permite tu ubicación y ordenamos los distribuidores Argel por cercanía. Mientras más cerca, más rápida tu entrega.</p>
+    <button class="btn btn-primary btn-lg" onclick="askGeo()">Usar mi ubicación</button>
+    <div class="geo-fallback">¿Prefieres elegir manual?<br>
+      <select id="citySelect" onchange="filterByCity(this.value)"><option value="">Selecciona tu ciudad…</option>${cityOptions()}</select>
+    </div></div>`;
+}
+function askGeo(){
+  if(!navigator.geolocation){return;}
+  const box=document.querySelector('.geo-box');
+  box.innerHTML=`<div class="pin">⏳</div><h3>Obteniendo tu ubicación…</h3><p>Un momento por favor.</p>`;
+  navigator.geolocation.getCurrentPosition(
+    pos=>showByDistance(pos.coords.latitude,pos.coords.longitude),
+    err=>{box.innerHTML=`<div class="pin">📍</div><h3>No pudimos obtener tu ubicación</h3>
+      <p>No hay problema: elige tu ciudad y te mostramos los distribuidores disponibles.</p>
+      <select id="citySelect" onchange="filterByCity(this.value)"><option value="">Selecciona tu ciudad…</option>${cityOptions()}</select>`;},
+    {timeout:8000});
+}
+function showByDistance(lat,lng){
+  document.querySelector('.geo-box').innerHTML=`<div class="pin" style="background:#dcfce7;color:var(--success)">✓</div><h3>Distribuidores ordenados por cercanía</h3><p>Estos son los distribuidores Argel más cercanos a tu ubicación.</p>`;
+  const ranked=DISTRIBUTORS.map(d=>({...d,km:haversine(lat,lng,d.lat,d.lng)})).sort((a,b)=>a.km-b.km);
+  renderDistList(ranked,true);
+}
+function filterByCity(city){
+  if(!city)return;
+  const list=DISTRIBUTORS.filter(d=>d.city===city);
+  document.querySelector('.geo-box').innerHTML=`<div class="pin">🏙️</div><h3>Distribuidores en ${esc(city)}</h3><p>Elige el distribuidor con el que quieres trabajar.</p>`;
+  renderDistList(list,false);
+}
+function renderDistList(list,showKm){
+  document.getElementById('distList').innerHTML=list.map(d=>`<div class="dist" data-id="${d.id}" onclick="selectDist('${d.id}')">
+    <div class="radio"></div><div><h4>${esc(d.name)}</h4><div class="addr">${esc(d.addr)}</div></div>
+    ${showKm?`<div class="km">${d.km.toFixed(1)} km<small>de distancia</small></div>`:'<div class="km" style="color:var(--ink-soft)">›</div>'}</div>`).join('');
+}
+function selectDist(id){
+  chosenDistributor=DISTRIBUTORS.find(d=>d.id===id);
+  document.querySelectorAll('.dist').forEach(el=>el.classList.toggle('sel',el.dataset.id===id));
+  renderGate();
+}
+function renderGate(){
+  document.getElementById('gateArea').innerHTML=`<div class="gate"><h3>Solo faltan tus datos</h3>
+    <p class="sub">Para que <strong>${esc(chosenDistributor.name)}</strong> te contacte y cotice. Nada de spam: tu pedido va directo a quien tú elegiste.</p>
+    <div class="form-grid">
+      <div class="field full"><label>¿Dónde estás en tu camino?</label>
+        <div class="seg"><button type="button" id="segEst" onclick="setType('estudiante')">Estudiante</button><button type="button" id="segTrab" onclick="setType('trabajando')">Ya ejerzo</button></div></div>
+      <div class="field"><label>Nombre completo</label><input id="fName" placeholder="Dr. / Dra. ..."></div>
+      <div class="field"><label>WhatsApp</label><input id="fPhone" placeholder="999 123 4567"></div>
+      <div class="field full"><label>Correo electrónico</label><input id="fEmail" type="email" placeholder="tu@correo.com"></div>
+      <div class="field full"><label>Universidad / Clínica / Consultorio</label><input id="fOrg" placeholder="Opcional"></div>
+    </div>
+    <button class="btn btn-primary btn-block btn-lg" style="margin-top:18px" onclick="submitReq()">Enviar requisición a ${esc(chosenDistributor.name.split(' ').slice(0,2).join(' '))}…</button>
+  </div>`;
+  document.getElementById('gateArea').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function setType(t){userType=t;document.getElementById('segEst').classList.toggle('on',t==='estudiante');document.getElementById('segTrab').classList.toggle('on',t==='trabajando');}
+
+function submitReq(){
+  const name=document.getElementById('fName').value.trim();
+  const phone=document.getElementById('fPhone').value.trim();
+  const email=document.getElementById('fEmail').value.trim();
+  if(!userType){alert('Indica si eres estudiante o ya ejerces.');return;}
+  if(!name||!phone||!email){alert('Completa nombre, WhatsApp y correo.');return;}
+  const payload={fecha:new Date().toISOString(),nombre:name,whatsapp:phone,email:email,tipo:userType,
+    organizacion:document.getElementById('fOrg').value.trim(),ciudad:chosenDistributor.city,
+    distribuidor:chosenDistributor.name,distribuidor_contacto:chosenDistributor.contact,nota:reqNote,
+    productos:cartItems().map(p=>({sku:p.id,nombre:p.name,cantidad:p.qty}))};
+  /* === PRODUCCIÓN: pon tu URL de Apps Script Web App y descomenta ===
+  fetch('https://script.google.com/macros/s/XXXXX/exec',{method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)}).then(()=>console.log('lead enviado'));
+  ================================================================== */
+  console.log('PAYLOAD que iría al Sheet:', payload);
+  renderSent();
+}
+function renderSent(){
+  const items=cartItems();
+  document.getElementById('sentBody').innerHTML=`<div class="check">✓</div>
+    <h2>Listo. Tu pedido va en camino a tu distribuidor</h2>
+    <p><span class="dist-name">${esc(chosenDistributor.name)}</span> ya recibió tu requisición.</p>
+    <p>Te contactará por WhatsApp para cotizar y coordinar la entrega.</p>
+    <div class="done-card"><h4>Resumen del pedido</h4><ul>${items.map(p=>`<li><span class="q">${esc(p.name)}</span><strong>×${p.qty}</strong></li>`).join('')}</ul></div>
+    <p style="color:var(--ink-soft);font-size:.9rem;margin-bottom:18px">Mientras tanto, sigue armando tu próximo pedido. Tu consultorio nunca debería quedarse sin material.</p>
+    <button class="btn btn-navy btn-lg" onclick="resetAll()">Volver al catálogo</button>`;
+  cart={};reqNote='';chosenDistributor=null;userType=null;saveCart();go('sent');
+}
+function resetAll(){go('catalog');}
+renderFilters();renderCat();renderCount();
+</script>
+</body>
+</html>

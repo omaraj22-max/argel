@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Argel · Distribuye con la marca que te manda clientes</title>
+<meta name="description" content="Distribuye Argel: hasta 40% de utilidad, stock garantizado con entregas en 24h y dentistas que llegan a ti con el pedido ya armado." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#072B5B; --navy-700:#0a3a78; --navy-900:#051d3e;
+    --sky:#28B7E8; --sky-600:#1aa0d0; --sky-50:#e9f7fd; --sky-100:#cfeefb;
+    --gray-bg:#F4F6F8; --white:#FFFFFF;
+    --ink:#0c1b2e; --ink-soft:#46586e; --line:#dde4ec; --line-soft:#eaeff4;
+    --success:#16a34a;
+    --font-display:'Montserrat', system-ui, sans-serif;
+    --font-body:'Inter', system-ui, sans-serif;
+    --r-sm:.5rem; --r-md:.75rem; --r-lg:1rem; --r-pill:999px;
+    --sh-sm:0 1px 2px rgba(7,43,91,.06);
+    --sh-md:0 8px 24px -10px rgba(7,43,91,.18);
+    --sh-lg:0 24px 60px -22px rgba(7,43,91,.26);
+    --max:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font-body);color:var(--ink);background:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4,.brand,.eyebrow,.btn,.stat-num{font-family:var(--font-display)}
+  img{display:block;max-width:100%}
+  button{font-family:inherit;cursor:pointer;border:none;background:none}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+
+  .eyebrow{font-size:.74rem;text-transform:uppercase;letter-spacing:.16em;color:var(--sky-600);font-weight:700}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600;border-radius:var(--r-md);transition:.16s;font-size:.95rem;padding:14px 26px;white-space:nowrap}
+  .btn-sky{background:var(--sky);color:var(--navy-900)}
+  .btn-sky:hover{background:var(--sky-600);color:#fff}
+  .btn-sky:active{transform:scale(.98)}
+  .btn-navy{background:var(--navy);color:#fff}
+  .btn-navy:hover{background:var(--navy-700)}
+  .btn-outline{background:transparent;border:1.5px solid var(--line);color:var(--navy)}
+  .btn-outline:hover{border-color:var(--sky);color:var(--sky-600)}
+  .btn-ghost-light{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.3);color:#fff}
+  .btn-ghost-light:hover{background:rgba(255,255,255,.18)}
+
+  .logo-mark{width:34px;height:34px;flex:none;display:grid;gap:3px;grid-template-rows:1fr 1fr;align-content:center}
+  .logo-mark .bar{display:grid;grid-template-columns:1fr 1fr;gap:3px;height:9px}
+  .logo-mark .bar i{border-radius:2px}
+  .logo-mark.on-navy .bar:nth-child(1) i:nth-child(1){background:#fff}
+  .logo-mark.on-navy .bar:nth-child(1) i:nth-child(2){background:var(--sky)}
+  .logo-mark.on-navy .bar:nth-child(2) i:nth-child(1){background:var(--sky)}
+  .logo-mark.on-navy .bar:nth-child(2) i:nth-child(2){background:#fff}
+  .logo-mark .bar:nth-child(1) i:nth-child(1){background:var(--navy)}
+  .logo-mark .bar:nth-child(1) i:nth-child(2){background:var(--sky)}
+  .logo-mark .bar:nth-child(2) i:nth-child(1){background:var(--sky)}
+  .logo-mark .bar:nth-child(2) i:nth-child(2){background:var(--navy)}
+
+  /* ---------- NAV ---------- */
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:1.3rem;letter-spacing:.02em;color:var(--navy)}
+  .brand small{display:block;font-family:var(--font-body);font-weight:500;font-size:.6rem;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase;margin-top:1px}
+  .nav-actions{display:flex;align-items:center;gap:20px}
+  .nav-link{font-size:.9rem;font-weight:500;color:var(--ink-soft)}
+  .nav-link:hover{color:var(--sky-600)}
+  .nav-cta{font-size:.86rem;padding:11px 22px}
+
+  /* ---------- HERO (split) ---------- */
+  .hero{background:linear-gradient(150deg,var(--navy) 0%,var(--navy-900) 100%);color:#fff;position:relative;overflow:hidden}
+  .hero::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(40,183,232,.16) 1.4px,transparent 1.6px);background-size:26px 26px;opacity:.5;-webkit-mask-image:linear-gradient(to bottom right,#000,transparent 70%);mask-image:linear-gradient(to bottom right,#000,transparent 70%)}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:80px 24px 88px;position:relative;z-index:1}
+  .hero h1{font-size:clamp(2.1rem,4.6vw,3.3rem);line-height:1.08;letter-spacing:-.025em;font-weight:800;margin:16px 0 18px}
+  .hero h1 .hl{color:var(--sky)}
+  .hero p.sub{font-size:1.12rem;color:rgba(255,255,255,.82);max-width:46ch;margin-bottom:30px}
+  .hero-ctas{display:flex;gap:13px;flex-wrap:wrap}
+  .hero-eyebrow{color:var(--sky)}
+  .hero-visual{position:relative}
+  .hero-visual .frame{border-radius:var(--r-lg);overflow:hidden;border:1px solid rgba(255,255,255,.14);box-shadow:var(--sh-lg);aspect-ratio:4/3;background:#fff}
+  .hero-visual .frame img{width:100%;height:100%;object-fit:contain;padding:28px}
+  .hero-badge{position:absolute;left:-18px;bottom:-20px;background:#fff;color:var(--navy);border-radius:var(--r-md);padding:16px 20px;box-shadow:var(--sh-lg);display:flex;align-items:center;gap:14px}
+  .hero-badge .big{font-family:var(--font-display);font-weight:800;font-size:1.9rem;color:var(--sky-600);line-height:1}
+  .hero-badge .lbl{font-size:.78rem;color:var(--ink-soft);line-height:1.25;max-width:13ch}
+
+  /* ---------- AUTORIDAD (franja) ---------- */
+  .authority{background:var(--gray-bg);border-bottom:1px solid var(--line)}
+  .auth-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:34px 24px;text-align:center}
+  .auth-item{display:flex;flex-direction:column;gap:3px;position:relative}
+  .auth-item:not(:last-child)::after{content:'';position:absolute;right:-10px;top:10%;height:80%;width:1px;background:var(--line)}
+  .stat-num{font-size:2rem;font-weight:800;color:var(--navy);line-height:1}
+  .stat-num .sky{color:var(--sky)}
+  .auth-item .lbl{font-size:.84rem;color:var(--ink-soft)}
+
+  section.block{padding:84px 0}
+  .sec-head{max-width:720px}
+  .sec-head h2{font-size:clamp(1.7rem,3.4vw,2.4rem);line-height:1.14;letter-spacing:-.02em;color:var(--navy);font-weight:800;margin-top:12px}
+
+  /* ---------- PAS ---------- */
+  .pas{background:var(--white)}
+  .pas-head h2{max-width:18ch}
+  .pas-body{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:38px;align-items:start}
+  .pas-text p{margin-bottom:18px;color:var(--ink-soft);font-size:1.04rem}
+  .pas-text p:last-child{color:var(--ink);font-weight:500;border-left:3px solid var(--sky);padding-left:18px;background:var(--sky-50);padding:16px 18px;border-radius:0 var(--r-sm) var(--r-sm) 0}
+  .pas-visual{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--sh-md);aspect-ratio:3/4;position:sticky;top:90px;background:#fff}
+  .pas-visual img{width:100%;height:100%;object-fit:contain;padding:34px}
+
+  /* ---------- PILARES ---------- */
+  .pillars{background:var(--gray-bg)}
+  .pillars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:42px}
+  .pillar{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:30px;transition:transform .18s,box-shadow .18s;position:relative;overflow:hidden}
+  .pillar:hover{transform:translateY(-5px);box-shadow:var(--sh-md)}
+  .pillar.feature{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pillar.feature .p-num,.pillar.feature h3{color:#fff}
+  .pillar.feature p{color:rgba(255,255,255,.8)}
+  .pillar.feature .p-icon{background:rgba(40,183,232,.2);color:var(--sky)}
+  .pillar.feature .tag{position:absolute;top:18px;right:18px;background:var(--sky);color:var(--navy-900);font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:4px 9px;border-radius:var(--r-pill);font-family:var(--font-display)}
+  .p-icon{width:50px;height:50px;border-radius:var(--r-md);background:var(--sky-50);color:var(--sky-600);display:grid;place-items:center;margin-bottom:18px}
+  .p-icon svg{width:26px;height:26px}
+  .pillar h3{font-size:1.45rem;font-weight:800;color:var(--navy);letter-spacing:-.01em;margin-bottom:10px;line-height:1.12}
+  .pillar p{color:var(--ink-soft);font-size:.96rem}
+
+  /* ---------- PASOS (cómo funciona) ---------- */
+  .how{background:var(--white)}
+  .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:42px;counter-reset:step}
+  .step{position:relative;padding-top:8px}
+  .step .num{font-family:var(--font-display);font-weight:800;font-size:1rem;color:#fff;background:var(--sky);width:38px;height:38px;border-radius:50%;display:grid;place-items:center;margin-bottom:16px}
+  .step h4{font-size:1.18rem;font-weight:700;color:var(--navy);margin-bottom:8px}
+  .step p{color:var(--ink-soft);font-size:.96rem}
+  .step:not(:last-child)::after{content:'→';position:absolute;top:14px;right:-16px;color:var(--sky);font-size:1.3rem;font-weight:700}
+  .how-closer{margin-top:42px;background:var(--navy);color:#fff;border-radius:var(--r-lg);padding:32px 36px;text-align:center;font-size:1.18rem;font-weight:600;font-family:var(--font-display);position:relative;overflow:hidden}
+  .how-closer::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(40,183,232,.14) 1.3px,transparent 1.5px);background-size:24px 24px;opacity:.6}
+  .how-closer span{position:relative;z-index:1}
+  .how-closer .hl{color:var(--sky)}
+
+  /* ---------- POLARIZACIÓN ---------- */
+  .polar{background:var(--gray-bg)}
+  .polar-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;align-items:center}
+  .polar h2{max-width:14ch}
+  .polar-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .polar-col{border-radius:var(--r-lg);padding:26px}
+  .polar-col.them{background:#fff;border:1px solid var(--line)}
+  .polar-col.us{background:var(--navy);color:#fff}
+  .polar-col h4{font-family:var(--font-display);font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;font-weight:700}
+  .polar-col.them h4{color:var(--ink-soft)}
+  .polar-col.us h4{color:var(--sky)}
+  .polar-col p{font-size:1rem;line-height:1.55}
+  .polar-col.them p{color:var(--ink-soft)}
+  .polar-line{margin-top:24px;font-size:1.05rem;color:var(--navy);font-weight:600;font-family:var(--font-display)}
+
+  /* ---------- CIERRE + FORM ---------- */
+  .close{background:linear-gradient(150deg,var(--navy) 0%,var(--navy-900) 100%);color:#fff;position:relative;overflow:hidden}
+  .close::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(40,183,232,.15) 1.4px,transparent 1.6px);background-size:28px 28px;opacity:.45;-webkit-mask-image:radial-gradient(circle at 70% 30%,#000,transparent 70%);mask-image:radial-gradient(circle at 70% 30%,#000,transparent 70%)}
+  .close-grid{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;position:relative;z-index:1}
+  .close h2{font-size:clamp(1.8rem,3.4vw,2.5rem);line-height:1.12;letter-spacing:-.02em;font-weight:800;margin:14px 0 16px}
+  .close h2 .hl{color:var(--sky)}
+  .close p.sub{color:rgba(255,255,255,.82);font-size:1.06rem;max-width:42ch}
+  .form-card{background:#fff;border-radius:var(--r-lg);padding:30px;box-shadow:var(--sh-lg)}
+  .form-card h3{font-family:var(--font-display);color:var(--navy);font-size:1.2rem;font-weight:700;margin-bottom:4px}
+  .form-card .fsub{color:var(--ink-soft);font-size:.86rem;margin-bottom:20px}
+  .ff{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+  .ff label{font-family:var(--font-display);font-size:.78rem;font-weight:600;color:var(--navy)}
+  .ff input,.ff select{padding:12px 13px;border:1px solid var(--line);border-radius:var(--r-md);font-family:inherit;font-size:.92rem;color:var(--ink)}
+  .ff input:focus,.ff select:focus{outline:2px solid var(--sky);outline-offset:1px;border-color:transparent}
+  .ff-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .form-micro{text-align:center;font-size:.78rem;color:var(--ink-soft);margin-top:12px}
+  #formMsg{display:none;text-align:center;padding:30px 10px}
+  #formMsg .ok{width:64px;height:64px;border-radius:50%;background:var(--success);color:#fff;display:grid;place-items:center;font-size:1.9rem;margin:0 auto 16px}
+  #formMsg h3{color:var(--navy);font-size:1.3rem;margin-bottom:6px}
+  #formMsg p{color:var(--ink-soft);font-size:.92rem}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--navy);color:rgba(255,255,255,.7);padding:0}
+  .foot-vals{display:flex;justify-content:center;gap:0;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.12)}
+  .foot-vals span{font-family:var(--font-display);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);padding:20px 26px;position:relative}
+  .foot-vals span:not(:last-child)::after{content:'|';position:absolute;right:0;color:rgba(255,255,255,.22)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;padding:24px;font-size:.82rem}
+
+  @media(max-width:920px){
+    .hero-grid,.pas-body,.polar-grid,.close-grid{grid-template-columns:1fr;gap:34px}
+    .hero-visual{order:-1}
+    .pas-visual{position:static;aspect-ratio:16/10;order:-1}
+    .auth-grid{grid-template-columns:1fr 1fr;gap:28px 20px}
+    .auth-item:nth-child(2)::after{display:none}
+    .pillars-grid,.how-grid{grid-template-columns:1fr}
+    .step:not(:last-child)::after{content:'↓';right:auto;left:18px;top:auto;bottom:-22px}
+    .polar-cols{grid-template-columns:1fr}
+  }
+  @media(max-width:560px){
+    .auth-grid{grid-template-columns:1fr}
+    .auth-item::after{display:none!important}
+    .ff-row{grid-template-columns:1fr}
+    .nav-cta,.nav-link{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="index.html">
+      <span class="logo-mark"><span class="bar"><i></i><i></i></span><span class="bar"><i></i><i></i></span></span>
+      <span>ARGEL<small>Odontología profesional</small></span>
+    </a>
+    <div class="nav-actions">
+      <a href="index.html" class="nav-link">Ver catálogo</a>
+      <a href="#cta" class="btn btn-navy nav-cta">Quiero distribuir</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow hero-eyebrow">Para distribuidores y mayoristas</span>
+      <h1>Gana hasta <span class="hl">40%</span> distribuyendo Argel, con dentistas que ya te están buscando</h1>
+      <p class="sub">No solo te damos producto con mejor margen. Te conectamos con dentistas que ya armaron su pedido y eligieron surtirse contigo.</p>
+      <div class="hero-ctas">
+        <a href="#cta" class="btn btn-sky">Quiero distribuir Argel</a>
+        <a href="#como" class="btn btn-ghost-light">Ver cómo funciona</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="frame"><img src="https://dcdn-us.mitiendanube.com/stores/006/801/944/products/lampara-aura-6dc95cd4f7b975e69617615842695292-640-0.webp" alt="Lámpara de fotocurado Aura, equipo Argel de grado profesional"></div>
+      <div class="hero-badge">
+        <span class="big">24h</span>
+        <span class="lbl">Entregas garantizadas en todo el país</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== AUTORIDAD ===================== -->
+<section class="authority">
+  <div class="wrap auth-grid">
+    <div class="auth-item"><span class="stat-num"><span class="sky">+2</span></span><span class="lbl">años de experiencia</span></div>
+    <div class="auth-item"><span class="stat-num"><span class="sky">+40</span></span><span class="lbl">depósitos y distribuidores en el país</span></div>
+    <div class="auth-item"><span class="stat-num">100%</span><span class="lbl">cobertura nacional</span></div>
+    <div class="auth-item"><span class="stat-num">Global</span><span class="lbl">red de fabricantes internacionales</span></div>
+  </div>
+</section>
+
+<!-- ===================== PAS ===================== -->
+<section class="block pas">
+  <div class="wrap">
+    <div class="sec-head pas-head">
+      <span class="eyebrow">El verdadero costo de un mal proveedor</span>
+      <h2>Tu negocio no pierde por falta de clientes. Pierde por quedar mal con los que ya tienes.</h2>
+    </div>
+    <div class="pas-body">
+      <div class="pas-text">
+        <p>Cada vez que un fabricante no surte a tiempo, eres tú quien da la cara. El dentista no le reclama a la marca: te reclama a ti. Y un cliente que no encontró lo que buscaba no vuelve — se va con el distribuidor de junto.</p>
+        <p>Mientras tanto, tu capital duerme en inventario que rota lento y persigues clientes que ya tienen a quién comprarle.</p>
+        <p>Argel corrige eso de raíz: disponibilidad garantizada, entregas en 24 horas y dentistas que llegan a ti con el pedido ya armado.</p>
+      </div>
+      <div class="pas-visual"><img src="https://dcdn-us.mitiendanube.com/stores/006/801/944/products/kit-completo-8b6c6070d894db3fe717613509560464-1024-1024.webp" alt="Kit completo de pulido de resina Argel"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PILARES ===================== -->
+<section class="block pillars">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Por qué distribuir Argel</span>
+      <h2>Tres razones para que Argel sea tu línea más rentable</h2>
+    </div>
+    <div class="pillars-grid">
+      <div class="pillar">
+        <div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3>Hasta 40% de utilidad</h3>
+        <p>Márgenes diseñados para que distribuir Argel sea de tus líneas más rentables, no un favor que le haces a la marca.</p>
+      </div>
+      <div class="pillar">
+        <div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16h2a2 2 0 0 0 2-2v-3l-3-4h-3"/><path d="M14 16V5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v11"/><circle cx="6.5" cy="18.5" r="1.8"/><circle cx="16.5" cy="18.5" r="1.8"/></svg></div>
+        <h3>Stock garantizado, entregas 24h</h3>
+        <p>Siempre hay material. Nunca le quedas mal a tu cliente por un "déjame checo si llega". El control vuelve a tus manos.</p>
+      </div>
+      <div class="pillar feature">
+        <span class="tag">Solo en Argel</span>
+        <div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>Dentistas que te buscan a ti</h3>
+        <p>Nuestro catálogo digital manda requisiciones de dentistas directo a tu zona. Ellos arman el pedido, tú solo cotizas y cierras.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CÓMO FUNCIONA ===================== -->
+<section class="block how" id="como">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Tu nuevo canal de clientes</span>
+      <h2>Mientras lees esto, un dentista está armando su pedido</h2>
+    </div>
+    <div class="how-grid">
+      <div class="step">
+        <div class="num">1</div>
+        <h4>El dentista descubre Argel</h4>
+        <p>En nuestro catálogo digital, arma su requisición con los productos que necesita para su consultorio.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h4>Te elige a ti</h4>
+        <p>Al cerrar, escoge a su distribuidor más cercano. Si estás en su zona, el pedido llega directo a tu bandeja.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h4>Cierras la venta</h4>
+        <p>Recibes los datos del dentista y su pedido listo. Tú cotizas con tu precio y coordinas la entrega.</p>
+      </div>
+    </div>
+    <div class="how-closer"><span>No es una promesa de marketing. Es un canal de clientes que trabaja para ti, <span class="hl">las 24 horas</span>.</span></div>
+  </div>
+</section>
+
+<!-- ===================== POLARIZACIÓN ===================== -->
+<section class="block polar">
+  <div class="wrap polar-grid">
+    <div>
+      <span class="eyebrow">¿Es Argel para ti?</span>
+      <h2>Argel no es para todos los distribuidores</h2>
+      <p class="polar-line">Distribuimos con quien quiere construir, no solo comprar cajas.</p>
+    </div>
+    <div class="polar-cols">
+      <div class="polar-col them">
+        <h4>Si solo buscas barato</h4>
+        <p>Si buscas el proveedor más barato para revender sin compromiso, hay opciones más simples que nosotros.</p>
+      </div>
+      <div class="polar-col us">
+        <h4>Si quieres construir</h4>
+        <p>Si quieres una marca que te mande clientes, que nunca te deje sin stock y que crezca contigo — entonces hablemos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CIERRE + FORM ===================== -->
+<section class="block close" id="cta">
+  <div class="wrap close-grid">
+    <div>
+      <span class="eyebrow" style="color:var(--sky)">Empieza hoy</span>
+      <h2>Cada día sin Argel es un cliente que llega al <span class="hl">distribuidor de junto</span></h2>
+      <p class="sub">Déjanos tus datos y te contactamos para activar tu cuenta de distribuidor. Sin compromiso: primero conoces los márgenes y el catálogo, tú decides.</p>
+    </div>
+    <div class="form-card">
+      <div id="formFields">
+        <h3>Solicita tu cuenta de distribuidor</h3>
+        <p class="fsub">Te contactamos en menos de 24 horas.</p>
+        <div class="ff"><label>Nombre o razón social</label><input id="dName" placeholder="Tu negocio"></div>
+        <div class="ff-row">
+          <div class="ff"><label>Nombre de contacto</label><input id="dContact" placeholder="Tu nombre"></div>
+          <div class="ff"><label>WhatsApp</label><input id="dPhone" placeholder="999 123 4567"></div>
+        </div>
+        <div class="ff"><label>Correo electrónico</label><input id="dEmail" type="email" placeholder="tu@correo.com"></div>
+        <div class="ff-row">
+          <div class="ff"><label>Ciudad / Estado</label><input id="dCity" placeholder="Mérida, Yuc."></div>
+          <div class="ff"><label>¿Ya distribuyes material dental?</label>
+            <select id="dExp"><option value="">Selecciona…</option><option>Sí, ya distribuyo</option><option>No, sería nuevo para mí</option></select>
+          </div>
+        </div>
+        <button class="btn btn-sky" style="width:100%;margin-top:8px" onclick="submitDist()">Quiero ser distribuidor Argel</button>
+        <p class="form-micro">Te contactamos en menos de 24 horas. Sin spam, sin compromiso.</p>
+      </div>
+      <div id="formMsg">
+        <div class="ok">✓</div>
+        <h3>¡Solicitud recibida!</h3>
+        <p>Un asesor de Argel te contactará en menos de 24 horas para activar tu cuenta de distribuidor.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-vals">
+    <span>Compromiso</span><span>Integridad</span><span>Calidad</span><span>Servicio</span><span>Trabajo en equipo</span>
+  </div>
+  <div class="wrap foot-bottom">
+    <span>Argel · Soluciones que impulsan la odontología profesional</span>
+    <span><a href="index.html" style="color:rgba(255,255,255,.7)">Ver catálogo →</a></span>
+  </div>
+</footer>
+
+<script>
+function submitDist(){
+  const name=document.getElementById('dName').value.trim();
+  const contact=document.getElementById('dContact').value.trim();
+  const phone=document.getElementById('dPhone').value.trim();
+  const email=document.getElementById('dEmail').value.trim();
+  if(!name||!contact||!phone||!email){alert('Completa razón social, contacto, WhatsApp y correo.');return;}
+  const payload={
+    fecha:new Date().toISOString(),
+    tipo_lead:'distribuidor',
+    razon_social:name, contacto:contact, whatsapp:phone, email:email,
+    ciudad:document.getElementById('dCity').value.trim(),
+    ya_distribuye:document.getElementById('dExp').value
+  };
+  /* === PRODUCCIÓN: POST al Apps Script (hoja "Distribuidores-Leads") ===
+  fetch('https://script.google.com/macros/s/XXXXX/exec',{method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+  ================================================================== */
+  console.log('LEAD DISTRIBUIDOR →', payload);
+  document.getElementById('formFields').style.display='none';
+  document.getElementById('formMsg').style.display='block';
+}
+</script>
+</body>
+</html>
