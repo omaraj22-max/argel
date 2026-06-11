@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Argel · Catálogo para dentistas</title>
 <meta name="description" content="Catálogo clínico Argel: instrumental, resinas, endodoncia y desechables de grado profesional. Arma tu requisición y tu distribuidor te cotiza." />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -34,13 +35,8 @@
   a{color:inherit;text-decoration:none}
   .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
 
-  .logo-mark{width:34px;height:34px;flex:none;display:grid;gap:3px;grid-template-rows:1fr 1fr;align-content:center}
-  .logo-mark .bar{display:grid;grid-template-columns:1fr 1fr;gap:3px;height:9px}
-  .logo-mark .bar i{border-radius:2px}
-  .logo-mark .bar:nth-child(1) i:nth-child(1){background:var(--navy)}
-  .logo-mark .bar:nth-child(1) i:nth-child(2){background:var(--sky)}
-  .logo-mark .bar:nth-child(2) i:nth-child(1){background:var(--sky)}
-  .logo-mark .bar:nth-child(2) i:nth-child(2){background:var(--navy)}
+  .logo-mark{height:34px;width:auto;flex:none;display:block}
+  .logo-mark svg{height:100%;width:auto;display:block}
 
   header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
   .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
@@ -219,7 +215,7 @@
 <header>
   <div class="wrap nav">
     <a class="brand" href="#" onclick="go('catalog');return false">
-      <span class="logo-mark"><span class="bar"><i></i><i></i></span><span class="bar"><i></i><i></i></span></span>
+      <span class="logo-mark"><svg viewBox="0 0 116 84" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="0" y="0" width="50" height="20" rx="3" fill="var(--navy)"/><rect x="66" y="0" width="50" height="20" rx="3" fill="var(--navy)"/><rect x="0" y="32" width="50" height="20" rx="3" fill="var(--sky)"/><rect x="66" y="32" width="50" height="20" rx="3" fill="var(--sky)"/><rect x="0" y="64" width="116" height="20" rx="3" fill="var(--navy)"/></svg></span>
       <span>ARGEL<small>Odontología profesional</small></span>
     </a>
     <nav class="nav-links">

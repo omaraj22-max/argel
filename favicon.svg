@@ -1,0 +1,7 @@
+<svg viewBox="0 0 116 84" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ARGEL">
+  <rect x="0" y="0" width="50" height="20" rx="3" fill="#072B5B"/>
+  <rect x="66" y="0" width="50" height="20" rx="3" fill="#072B5B"/>
+  <rect x="0" y="32" width="50" height="20" rx="3" fill="#28B7E8"/>
+  <rect x="66" y="32" width="50" height="20" rx="3" fill="#28B7E8"/>
+  <rect x="0" y="64" width="116" height="20" rx="3" fill="#072B5B"/>
+</svg>
