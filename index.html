@@ -296,14 +296,9 @@
 </footer>
 
 <script src="products.js"></script>
+<script src="distributors.js"></script>
 <script>
-const DISTRIBUTORS = [
-  {id:'d1', name:'Depósito Dental Mérida Centro', addr:'Calle 60 #450, Centro, Mérida, Yuc.', city:'Mérida', lat:20.9674, lng:-89.6237, contact:'merida@ejemplo.com'},
-  {id:'d2', name:'Dental Norte Yucatán', addr:'Av. Pérez Ponce 112, Mérida, Yuc.', city:'Mérida', lat:20.9890, lng:-89.6100, contact:'norte@ejemplo.com'},
-  {id:'d3', name:'Insumos Dentales Motul', addr:'Calle 30 #88, Motul, Yuc.', city:'Motul', lat:21.0950, lng:-89.2870, contact:'motul@ejemplo.com'},
-  {id:'d4', name:'Distribuidora Dental Cancún', addr:'Av. Tulum SM 22, Cancún, Q. Roo', city:'Cancún', lat:21.1619, lng:-86.8515, contact:'cancun@ejemplo.com'},
-  {id:'d5', name:'Dental Express CDMX', addr:'Av. Insurgentes Sur 1200, CDMX', city:'CDMX', lat:19.3700, lng:-99.1700, contact:'cdmx@ejemplo.com'},
-];
+const NEAREST_LIMIT = 8; // distribuidores más cercanos a mostrar tras geolocalizar
 
 // --- Derivados de la descripción (no hay specs/benefits en el catálogo) ---
 function benefitsOf(p){
@@ -410,7 +405,7 @@ function haversine(lat1,lon1,lat2,lon2){
   const a=Math.sin(dLat/2)**2+Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
   return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
 }
-function cityOptions(){return [...new Set(DISTRIBUTORS.map(d=>d.city))].map(c=>`<option>${esc(c)}</option>`).join('');}
+function cityOptions(){return DIST_CITIES.map(c=>`<option>${esc(c)}</option>`).join('');}
 function initDist(){
   chosenDistributor=null;
   document.getElementById('distList').innerHTML='';document.getElementById('gateArea').innerHTML='';
@@ -434,8 +429,8 @@ function askGeo(){
     {timeout:8000});
 }
 function showByDistance(lat,lng){
-  document.querySelector('.geo-box').innerHTML=`<div class="pin" style="background:#dcfce7;color:var(--success)">✓</div><h3>Distribuidores ordenados por cercanía</h3><p>Estos son los distribuidores Argel más cercanos a tu ubicación.</p>`;
-  const ranked=DISTRIBUTORS.map(d=>({...d,km:haversine(lat,lng,d.lat,d.lng)})).sort((a,b)=>a.km-b.km);
+  const ranked=DISTRIBUTORS.map(d=>({...d,km:haversine(lat,lng,d.lat,d.lng)})).sort((a,b)=>a.km-b.km).slice(0,NEAREST_LIMIT);
+  document.querySelector('.geo-box').innerHTML=`<div class="pin" style="background:#dcfce7;color:var(--success)">✓</div><h3>Tus ${ranked.length} distribuidores más cercanos</h3><p>De nuestra red de ${DISTRIBUTORS.length} distribuidores Argel en el país, estos son los más cercanos a tu ubicación.</p>`;
   renderDistList(ranked,true);
 }
 function filterByCity(city){
@@ -445,8 +440,9 @@ function filterByCity(city){
   renderDistList(list,false);
 }
 function renderDistList(list,showKm){
+  if(!list.length){document.getElementById('distList').innerHTML=`<div class="empty"><p>Aún no tenemos un distribuidor listado en esa ciudad. Prueba con "Usar mi ubicación" para ver los más cercanos.</p></div>`;return;}
   document.getElementById('distList').innerHTML=list.map(d=>`<div class="dist" data-id="${d.id}" onclick="selectDist('${d.id}')">
-    <div class="radio"></div><div><h4>${esc(d.name)}</h4><div class="addr">${esc(d.addr)}</div></div>
+    <div class="radio"></div><div><h4>${esc(d.name)}</h4><div class="addr">${esc(d.addr)}</div>${d.phone?`<div class="addr">📞 ${esc(d.phone)}</div>`:''}</div>
     ${showKm?`<div class="km">${d.km.toFixed(1)} km<small>de distancia</small></div>`:'<div class="km" style="color:var(--ink-soft)">›</div>'}</div>`).join('');
 }
 function selectDist(id){
@@ -479,7 +475,7 @@ function submitReq(){
   if(!name||!phone||!email){alert('Completa nombre, WhatsApp y correo.');return;}
   const payload={fecha:new Date().toISOString(),nombre:name,whatsapp:phone,email:email,tipo:userType,
     organizacion:document.getElementById('fOrg').value.trim(),ciudad:chosenDistributor.city,
-    distribuidor:chosenDistributor.name,distribuidor_contacto:chosenDistributor.contact,nota:reqNote,
+    distribuidor:chosenDistributor.name,distribuidor_telefono:chosenDistributor.phone,distribuidor_direccion:chosenDistributor.addr,nota:reqNote,
     productos:cartItems().map(p=>({sku:p.id,nombre:p.name,cantidad:p.qty}))};
   /* === PRODUCCIÓN: pon tu URL de Apps Script Web App y descomenta ===
   fetch('https://script.google.com/macros/s/XXXXX/exec',{method:'POST',
