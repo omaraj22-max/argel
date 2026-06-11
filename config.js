@@ -5,7 +5,7 @@
 //  solo se imprimen en la consola del navegador (no se pierde nada).
 //  Pasos de despliegue: ver apps-script/Codigo.gs y el README.
 // ============================================================
-const LEAD_ENDPOINT = "";
+const LEAD_ENDPOINT = "https://script.google.com/macros/s/AKfycbz6g9FHy3r3ooAo1fsk732WLcMp5w-H8BDv5gch5uE_ZWZA3NsJITJx-rx7JBhAJt85XA/exec";
 
 /**
  * Envía el lead a la hoja de cálculo. Es "fire-and-forget": no bloquea la UI
