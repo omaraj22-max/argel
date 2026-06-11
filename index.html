@@ -295,6 +295,7 @@
   </div>
 </footer>
 
+<script src="config.js"></script>
 <script src="products.js"></script>
 <script src="distributors.js"></script>
 <script>
@@ -473,15 +474,11 @@ function submitReq(){
   const email=document.getElementById('fEmail').value.trim();
   if(!userType){alert('Indica si eres estudiante o ya ejerces.');return;}
   if(!name||!phone||!email){alert('Completa nombre, WhatsApp y correo.');return;}
-  const payload={fecha:new Date().toISOString(),nombre:name,whatsapp:phone,email:email,tipo:userType,
+  const payload={fecha:new Date().toISOString(),tipo_lead:'requisicion',nombre:name,whatsapp:phone,email:email,tipo:userType,
     organizacion:document.getElementById('fOrg').value.trim(),ciudad:chosenDistributor.city,
     distribuidor:chosenDistributor.name,distribuidor_telefono:chosenDistributor.phone,distribuidor_direccion:chosenDistributor.addr,nota:reqNote,
     productos:cartItems().map(p=>({sku:p.id,nombre:p.name,cantidad:p.qty}))};
-  /* === PRODUCCIÓN: pon tu URL de Apps Script Web App y descomenta ===
-  fetch('https://script.google.com/macros/s/XXXXX/exec',{method:'POST',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)}).then(()=>console.log('lead enviado'));
-  ================================================================== */
-  console.log('PAYLOAD que iría al Sheet:', payload);
+  sendLead(payload);   // configura la URL en config.js (LEAD_ENDPOINT)
   renderSent();
 }
 function renderSent(){

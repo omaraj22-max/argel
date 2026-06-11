@@ -30,11 +30,27 @@ python3 -m http.server 4185
 # abre http://localhost:4185
 ```
 
-## Puesta en producción (leads)
+## Leads → Google Sheets
 
-Las funciones `submitReq()` (index) y `submitDist()` (distribuidores) ya construyen el
-`payload` del lead y lo imprimen en consola. Para enviarlo a Google Sheets, descomenta el
-bloque `fetch(...)` y reemplaza la URL del Web App de Apps Script.
+Los formularios ya envían el lead mediante `sendLead()` ([`config.js`](config.js)).
+Mientras `LEAD_ENDPOINT` esté vacío, el sitio corre en **modo demo** (el lead solo se
+imprime en consola; nada se rompe). Para conectarlo a una hoja de cálculo:
+
+1. Crea una Google Sheet nueva.
+2. **Extensiones → Apps Script**, borra todo y pega [`apps-script/Codigo.gs`](apps-script/Codigo.gs). Guarda.
+3. **Implementar → Nueva implementación → Aplicación web**
+   - Ejecutar como: **Yo**
+   - Quién tiene acceso: **Cualquier usuario**
+4. Copia la URL que termina en `/exec` y pégala en [`config.js`](config.js):
+   ```js
+   const LEAD_ENDPOINT = "https://script.google.com/macros/s/XXXXX/exec";
+   ```
+5. Listo. Las requisiciones del catálogo caen en la pestaña **Requisiciones** (con
+   distribuidor, teléfono, dirección, productos y unidades) y las altas de la landing
+   en **Distribuidores-Leads**. Las pestañas y encabezados se crean solos.
+
+Para actualizar el código del script después: **Administrar implementaciones → editar →
+Versión: Nueva → Implementar** (la URL `/exec` no cambia).
 
 ## Stack
 

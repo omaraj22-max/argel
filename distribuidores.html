@@ -381,6 +381,7 @@
   </div>
 </footer>
 
+<script src="config.js"></script>
 <script>
 function submitDist(){
   const name=document.getElementById('dName').value.trim();
@@ -395,11 +396,7 @@ function submitDist(){
     ciudad:document.getElementById('dCity').value.trim(),
     ya_distribuye:document.getElementById('dExp').value
   };
-  /* === PRODUCCIÓN: POST al Apps Script (hoja "Distribuidores-Leads") ===
-  fetch('https://script.google.com/macros/s/XXXXX/exec',{method:'POST',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
-  ================================================================== */
-  console.log('LEAD DISTRIBUIDOR →', payload);
+  sendLead(payload);   // configura la URL en config.js (LEAD_ENDPOINT)
   document.getElementById('formFields').style.display='none';
   document.getElementById('formMsg').style.display='block';
 }
